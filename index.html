@@ -1,0 +1,108 @@
+
+Script copied to clipboard!
+Ethiopia Travel Dialogue
+Audio Speech Synthesizer & WAV File Generator
+
+
+Play Dialogue
+
+Stop
+Dialogue Transcript
+Line 6 / 11
+Soliyana (Agent)
+Line 1
+Good afternoon, Sir! Welcome to Ethiopia. How can I assist you with your itinerary today?
+
+Marcus (Tourist)
+Line 2
+Hello! I'm looking forward to visiting the historic rock-hewn churches in Lalibela, but I'm unsure about the best way to get there from Addis Ababa.
+
+Soliyana (Agent)
+Line 3
+It’s a fantastic destination! To start planning your trip, would you prefer to travel by bus, train, or flight?
+
+Marcus (Tourist)
+Line 4
+I’m trying to weigh time versus cost. What are the main differences between them?
+
+Soliyana (Agent)
+Line 5
+You can take a domestic flight, which is faster, or a bus, which is cheaper but takes longer. The flight takes about an hour, while the scenic bus ride takes a full day.
+
+Marcus (Tourist)
+Line 6
+Since my vacation time is limited, a flight sounds much more convenient. Are there any options with stops along the way?
+
+Soliyana (Agent)
+Line 7
+Yes, you can choose between a direct flight and one with stopovers in Bahir Dar or Gondar if you'd like to explore those historic cities along the route.
+
+Marcus (Tourist)
+Line 8
+A direct flight directly to Lalibela would be ideal. What seating options do you have available?
+
+Soliyana (Agent)
+Line 9
+Ethiopian Airlines operates daily services on that route. This airline offers both economy and business class options. The economy includes a generous baggage allowance, while business class provides priority check-in and lounge access.
+
+Marcus (Tourist)
+Line 10
+Economy class sounds perfect for me. Let's go ahead and book the direct flight!
+
+Soliyana (Agent)
+Line 11
+Excellent choice! I’ll issue your domestic ticket right away. Enjoy your time in Ethiopia!
+
+Voice Settings
+Soliyana (Agent - Female British)
+
+Google UK English Female (en-GB)
+Marcus (Tourist - Male British)
+
+Google UK English Male (en-GB)
+Speech Rate
+1.0x
+
+Pitch
+1.0
+
+Generate HD .WAV Audio File
+To render and save a high-definition offline .wav file with natural British studio voices (Sonia & Ryan Neural TTS), run this Python command:
+
+
+Copy Script
+pip install edge-tts pydub
+
+# Run Python code to generate dialogue.wav:
+import asyncio
+import edge_tts
+
+dialogue = [
+    ("en-GB-SoniaNeural", "Good afternoon, Sir! Welcome to Ethiopia. How can I assist you with your itinerary today?"),
+    ("en-GB-RyanNeural", "Hello! I'm looking forward to visiting the historic rock-hewn churches in Lalibela, but I'm unsure about the best way to get there from Addis Ababa."),
+    ("en-GB-SoniaNeural", "It’s a fantastic destination! To start planning your trip, would you prefer to travel by bus, train, or flight?"),
+    ("en-GB-RyanNeural", "I’m trying to weigh time versus cost. What are the main differences between them?"),
+    ("en-GB-SoniaNeural", "You can take a domestic flight, which is faster, or a bus, which is cheaper but takes longer. The flight takes about an hour, while the scenic bus ride takes a full day."),
+    ("en-GB-RyanNeural", "Since my vacation time is limited, a flight sounds much more convenient. Are there any options with stops along the way?"),
+    ("en-GB-SoniaNeural", "Yes, you can choose between a direct flight and one with stopovers in Bahir Dar or Gondar if you'd like to explore those historic cities along the route."),
+    ("en-GB-RyanNeural", "A direct flight directly to Lalibela would be ideal. What seating options do you have available?"),
+    ("en-GB-SoniaNeural", "Ethiopian Airlines operates daily services on that route. This airline offers both economy and business class options. The economy includes a generous baggage allowance, while business class provides priority check-in and lounge access."),
+    ("en-GB-RyanNeural", "Economy class sounds perfect for me. Let's go ahead and book the direct flight!"),
+    ("en-GB-SoniaNeural", "Excellent choice! I’ll issue your domestic ticket right away. Enjoy your time in Ethiopia!")
+]
+
+async def make_wav():
+    import os
+    from pydub import AudioSegment
+    combined = AudioSegment.empty()
+    for i, (voice, text) in enumerate(dialogue):
+        fn = f"line_{i}.mp3"
+        tts = edge_tts.Communicate(text, voice)
+        await tts.save(fn)
+        seg = AudioSegment.from_mp3(fn) + AudioSegment.silent(duration=400)
+        combined += seg
+        os.remove(fn)
+    combined.export("ethiopia_dialogue.wav", format="wav")
+    print("Exported ethiopia_dialogue.wav successfully!")
+
+asyncio.run(make_wav())
